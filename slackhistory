@@ -17,9 +17,6 @@ else {
 // Set API token
 $token = getenv('SLACK_API_TOKEN');
 
-// Set Slack API Endpoint
-$apiendpoint = "https://slack.com/api/groups.history";
-
 // Initialize finished variable
 $has_more = false;
 
@@ -31,6 +28,47 @@ $inclusive = 1;
 
 // Start with now being the default start time range
 $latest = time();
+
+
+/* --- Pull User Names -- */
+
+// Set Slack API Endpoint
+$apiendpoint = "https://slack.com/api/users.list";
+
+$fields = array(
+  'token' => urlencode($token),
+);
+
+//url-ify the data for the POST
+foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+rtrim($fields_string, '&');
+
+//open connection
+$ch = curl_init();
+
+//set the url, number of POST vars, POST data
+curl_setopt($ch,CURLOPT_URL, $apiendpoint);
+curl_setopt($ch,CURLOPT_POST, count($fields));
+curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+
+//execute post
+$result = json_decode(curl_exec($ch));
+
+$userlist = array();
+
+foreach ($result->members as $member ) {
+  $userlist[$member->id] = $member->real_name;
+}
+
+//close connection
+curl_close($ch);
+
+
+/* --- Pull Slack Data -- */
+
+// Set Slack API Endpoint
+$apiendpoint = "https://slack.com/api/groups.history";
 
 do {
 
@@ -63,7 +101,7 @@ do {
 
   foreach ($result->messages as $message ) {  
     if ( $message->subtype == "" ) {  //Only display messages without a subtype since these are actual user typed messages
-      echo $message->ts."\t".$message->user."\t".$channel."\n";
+      echo $message->ts."\t".$userlist[$message->user]."\t".$channel."\n";
     }
     $latest = $message->ts;
   }

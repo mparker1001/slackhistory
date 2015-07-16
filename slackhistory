@@ -4,15 +4,21 @@
 
 The Slack API token should be stored as an environment variable called SLACK_API_TOKEN
 
+You must set the timezone or warnings will appear.
+Set your time zone as an environment variable called SLACK_TIMEZONE (A list of timezones can be found at http://php.net/manual/en/timezones.php).
+
 */
 
 // Check and set arguments. If they don't exist, then stop the script
 if (@$argv[1] == "") {
-  die("Usage: slackhistory <channel_id\n");
+  die("Usage: slackhistory <channel_id>\n");
 }
 else {
 	$channel = $argv[1];
 }
+
+//Set Timezone
+date_default_timezone_set(getenv('SLACK_TIMEZONE'));
 
 // Set API token
 $token = getenv('SLACK_API_TOKEN');
@@ -136,7 +142,7 @@ do {
 
   foreach ($result->messages as $message ) {  
     if ( $message->subtype == "" ) {  //Only display messages without a subtype since these are actual user typed messages
-      echo $message->ts."\t".$userlist[$message->user]."\t".$grouplist[$channel]."\n";
+      echo date('Y/m/d H:i:s',$message->ts)."\t".$userlist[$message->user]."\t".$grouplist[$channel]."\n";
     }
     $latest = $message->ts;
   }

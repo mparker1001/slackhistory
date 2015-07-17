@@ -45,3 +45,8 @@ For example:
 ```
 ./slackhistory U12345678
 ```
+
+Another example but saving the output to a file:
+```
+./slackhistory U12345678 >> output.txt
+```

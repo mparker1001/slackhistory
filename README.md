@@ -5,6 +5,11 @@ The "slackhistory" script will display the entire message history of a slack
 channel (via *stdout*), but not the message content itself. This can be useful
 if you want to pull user metrics.
 
+The output of this script will be in the following format for each message:
+```
+<timestamp> <user_real_name> <channel_name>
+```
+
 ----
 Prerequisites
 ----

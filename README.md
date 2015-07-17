@@ -5,13 +5,11 @@ This script will pull the entire message history of a slack channel, but not
 the message content itself. This can be useful if you want to pull user
 metrics.
 
-
 ----
 Prerequisites
 ----
 
 This was tested on PHP 5.5+. It may work on earlier versions, however.
-
 
 ----
 Configuration
@@ -34,7 +32,6 @@ For example, add the following to your .bash_profile file:
 ```
 export SLACK_TIMEZONE="America/Chicago"
 ```
-
 
 ----
 Usage

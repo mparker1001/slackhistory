@@ -1,9 +1,9 @@
 ----
 Description
 ----
-This script will display the entire message history of a slack channel (via
-STDOUT), but not the message content itself. This can be useful if you want to
-pull user metrics.
+The "slackhistory" script will display the entire message history of a slack
+channel (via *stdout*), but not the message content itself. This can be useful
+if you want to pull user metrics.
 
 ----
 Prerequisites
